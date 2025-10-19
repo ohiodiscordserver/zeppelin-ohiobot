@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: zeppelin-ohiobot
+    env: node
+    repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: KEY
+        generateValue: true
+        length: 32
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_SECRET
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: DASHBOARD_URL
+        value: https://yourbot.onrender.com
+      - key: API_URL
+        value: https://yourbot.onrender.com/api
+      - key: STAFF
+        sync: false
+      - key: DEFAULT_ALLOWED_SERVERS
+        sync: false
+      - key: API_PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zeppelin-db
+          property: connectionString
+    autoScaling: false
+    healthCheckPath: /api/health
+    region: oregon
+
+  - type: web
+    name: zeppelin-dashboard
+    env: static
+    repo: https://github.com/yourusername/zeppelinbot
+    branch: main
+    buildCommand: npm install && npm run build --prefix dashboard
+    staticPublishPath: dashboard/dist
+    region: oregon
+
+databases:
+  - name: zeppelin-db
+    databaseName: zeppelin
+    region: oregon
