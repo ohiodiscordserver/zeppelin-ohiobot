@@ -1,5 +1,17 @@
 ![Zeppelin Banner](assets/zepbanner.png)
+
+# Zeppelin - Ohio Discord Bot Fork
+
+**Forked by:** ohiodiscordserver  
+**Purpose:** Self-hosting Zeppelin for efficient Discord moderation  
+**Date:** October 19, 2025
+
+This is a fork of the ranrinc/zeppelinbot repository, configured for self-hosting on Render (free tier). The setup includes custom configuration for deployment without requiring credit card verification.
+
+---
+
 # Zeppelin
+
 Zeppelin is a moderation bot for Discord, designed with large servers and reliability in mind.
 
 **Main features include:**
@@ -20,14 +32,17 @@ Zeppelin is a moderation bot for Discord, designed with large servers and reliab
 See https://zeppelin.gg/ for more details.
 
 ## Usage documentation
+
 For information on how to use the bot, see https://zeppelin.gg/docs
 
 ## Development
+
 See [DEVELOPMENT.md](./DEVELOPMENT.md) for instructions on running the development environment.
 
 Once you have the environment up and running, see [MANAGEMENT.md](./MANAGEMENT.md) for how to manage your bot.
 
 ## Production
+
 See [PRODUCTION.md](./PRODUCTION.md) for instructions on how to run the bot in production.
 
 Once you have the environment up and running, see [MANAGEMENT.md](./MANAGEMENT.md) for how to manage your bot.
