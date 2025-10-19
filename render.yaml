@@ -37,7 +37,7 @@ services:
   - type: web
     name: zeppelin-dashboard
     env: static
-    repo: https://github.com/yourusername/zeppelinbot
+    repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
     buildCommand: npm install && npm run build --prefix dashboard
     staticPublishPath: dashboard/dist
@@ -46,4 +46,3 @@ services:
 databases:
   - name: zeppelin-db
     databaseName: zeppelin
-    region: oregon
