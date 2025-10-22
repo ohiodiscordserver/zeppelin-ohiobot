@@ -37,6 +37,8 @@ services:
         sync: false
       - key: DB_DATABASE
         sync: false
+      - key: MYSQL_SSL
+        value: "true"
     autoScaling: false
     healthCheckPath: /api/health
     region: oregon
