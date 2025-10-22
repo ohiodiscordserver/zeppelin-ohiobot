@@ -1,14 +1,11 @@
 services:
   - type: web
     name: zeppelin-ohiobot
-    env: node
+    env: docker
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: cd backend && npm ci --prefer-offline --no-audit --progress=false --production && cd .. && npm run build
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=4096
       - key: NODE_ENV
         value: production
       - key: KEY
@@ -44,7 +41,7 @@ services:
     env: static
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: cd dashboard && npm ci --prefer-offline --no-audit --production && npm run build
+    buildCommand: cd dashboard && npm ci --prefer-offline --no-audit --only=production && npm run build
     staticPublishPath: dashboard/dist
     region: oregon
     plan: free
