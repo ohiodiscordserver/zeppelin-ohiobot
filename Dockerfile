@@ -6,18 +6,18 @@ RUN apk add --no-cache python3 make g++ git
 
 WORKDIR /app
 
-# Copy and install backend dependencies (include dev for tsc)
+# Backend deps with dev
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
 RUN npm ci --prefer-offline --no-audit --progress=false
 
-# Copy and install dashboard deps (prod only)
+# Dashboard deps with dev (needed for cross-env/webpack)
 WORKDIR /app
 COPY dashboard/package*.json ./dashboard/
 WORKDIR /app/dashboard
-RUN npm ci --only=production --prefer-offline --no-audit --progress=false
+RUN npm ci --prefer-offline --no-audit --progress=false
 
-# Root dev deps for tsc in build script
+# Root deps with dev
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --prefer-offline --no-audit --progress=false
@@ -25,15 +25,16 @@ RUN npm ci --prefer-offline --no-audit --progress=false
 # Copy source
 COPY . .
 
-# Build backend (uses root tsc)
+# Build backend
 RUN npm run build
 
 # Build dashboard
 WORKDIR /app/dashboard
 RUN npm run build
 
+# Prune to production for runtime
 WORKDIR /app
-RUN npm prune --production && npm cache clean --force
+RUN npm prune --production && npm cache clean --force && (cd backend && npm prune --production) && (cd dashboard && npm prune --production)
 
 USER node
 EXPOSE 3000
