@@ -1,51 +1,40 @@
 FROM node:16-alpine
 
-# Set memory limit for Node.js
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Install system dependencies
 RUN apk add --no-cache python3 make g++ git
 
-# Set up app root
 WORKDIR /app
 
-# Copy and install backend dependencies first (for better Docker caching)
+# Copy and install backend dependencies (include dev for tsc)
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
-RUN npm ci --only=production --prefer-offline --no-audit --progress=false
+RUN npm ci --prefer-offline --no-audit --progress=false
 
-# Copy and install dashboard dependencies
+# Copy and install dashboard deps (prod only)
 WORKDIR /app
 COPY dashboard/package*.json ./dashboard/
 WORKDIR /app/dashboard
 RUN npm ci --only=production --prefer-offline --no-audit --progress=false
 
-# Copy root package.json for build scripts
+# Root dev deps for tsc in build script
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production --prefer-offline --no-audit --progress=false
+RUN npm ci --prefer-offline --no-audit --progress=false
 
-# Copy all source code
+# Copy source
 COPY . .
 
-# Build the backend TypeScript
+# Build backend (uses root tsc)
 RUN npm run build
 
-# Build the dashboard
+# Build dashboard
 WORKDIR /app/dashboard
 RUN npm run build
 
-# Back to app root
 WORKDIR /app
+RUN npm prune --production && npm cache clean --force
 
-# Clean up dev dependencies and cache to reduce image size
-RUN npm cache clean --force
-
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
-USER nodejs
-
+USER node
 EXPOSE 3000
-
 CMD ["npm", "start"]
