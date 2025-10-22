@@ -32,6 +32,7 @@ module.exports = {
 
   // Pool options
   extra: {
+    ssl: process.env.MYSQL_SSL === "true" ? { rejectUnauthorized: false } : undefined,
     typeCast(field, next) {
       if (field.type === "DATETIME") {
         const val = field.string();
