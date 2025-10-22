@@ -4,11 +4,13 @@ services:
     env: node
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: npm ci --prefer-offline --no-audit --progress=false
+    buildCommand: cd backend && npm ci --prefer-offline --no-audit --progress=false --production && cd .. && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_OPTIONS
         value: --max-old-space-size=4096
+      - key: NODE_ENV
+        value: production
       - key: KEY
         generateValue: true
         length: 32
@@ -35,16 +37,19 @@ services:
     autoScaling: false
     healthCheckPath: /api/health
     region: oregon
+    plan: free
 
   - type: web
     name: zeppelin-dashboard
     env: static
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: npm ci --prefer-offline --no-audit && npm run build --prefix dashboard
+    buildCommand: cd dashboard && npm ci --prefer-offline --no-audit --production && npm run build
     staticPublishPath: dashboard/dist
     region: oregon
+    plan: free
 
 databases:
   - name: zeppelin-db
     databaseName: zeppelin
+    plan: free
