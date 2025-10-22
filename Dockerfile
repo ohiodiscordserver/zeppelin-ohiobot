@@ -1,5 +1,8 @@
 FROM node:16
 
+# Allow older Webpack and crypto
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 # Set up app root & install top-level dependencies
 WORKDIR /app
 COPY package*.json ./
@@ -14,6 +17,9 @@ RUN npm install
 WORKDIR /app
 COPY . .
 
+# Build the backend TypeScript
+RUN npm run build
+
 # Build the dashboard
 WORKDIR /app/dashboard
 RUN npm run build
@@ -23,4 +29,4 @@ WORKDIR /app
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "dist/index.js"]
