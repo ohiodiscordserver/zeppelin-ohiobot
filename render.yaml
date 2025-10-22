@@ -8,8 +8,6 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_URL
-        value: postgresql://postgres:{your_actual_password}@db.bfydkvqfwhprqphxmdzn.supabase.co:5432/postgres?sslmode=require
       - key: KEY
         generateValue: true
         length: 32
@@ -29,6 +27,16 @@ services:
         sync: false
       - key: API_PORT
         value: 3000
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DATABASE
+        sync: false
     autoScaling: false
     healthCheckPath: /api/health
     region: oregon
