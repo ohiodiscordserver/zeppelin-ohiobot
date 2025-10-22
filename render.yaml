@@ -4,9 +4,11 @@ services:
     env: node
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: npm install
+    buildCommand: npm ci --prefer-offline --no-audit --progress=false
     startCommand: npm start
     envVars:
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=4096
       - key: KEY
         generateValue: true
         length: 32
@@ -39,7 +41,7 @@ services:
     env: static
     repo: https://github.com/ohiodiscordserver/zeppelin-ohiobot.git
     branch: main
-    buildCommand: npm install && npm run build --prefix dashboard
+    buildCommand: npm ci --prefer-offline --no-audit && npm run build --prefix dashboard
     staticPublishPath: dashboard/dist
     region: oregon
 
